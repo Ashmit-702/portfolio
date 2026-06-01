@@ -153,16 +153,20 @@
             color: var(--accent);
         }
 
-        /* Hero */
+        /* Hero REDESIGN */
         .hero {
             min-height: 85vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
+            padding: 4rem 0; /* Padding for spatial balance */
         }
 
         .hero-content {
-            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Staggered Hero Text Reveal */
@@ -180,30 +184,39 @@
         }
 
         .hero h1 {
-            font-size: clamp(4.5rem, 9vw, 8rem);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
+            /* Using vw to naturally scale across the horizontal width of the screen */
+            font-size: clamp(3.5rem, 8vw, 8rem); 
+            margin-bottom: 4rem;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
         }
         
-        .hero h1 span {
+        .hero h1 span.italic-text {
             color: var(--text-secondary);
             font-style: italic;
             font-weight: 400;
-            display: block;
+            /* Removed display: block; so it stays horizontal */
+        }
+
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 2rem;
+            width: 100%;
+            border-top: 1px solid var(--border);
+            padding-top: 2.5rem;
         }
 
         .hero p {
-            font-size: 1.5rem;
-            max-width: 650px;
+            font-size: 1.25rem;
+            max-width: 550px;
             color: var(--text-secondary);
-            margin-bottom: 3rem;
+            margin: 0;
         }
 
-        /* --- REDESIGNED SYSTEM HUD (Hero Anchor) --- */
+        /* System HUD integrated into layout flow */
         .hero-hud {
-            position: absolute;
-            right: 0;
-            bottom: 4rem;
             display: flex;
             align-items: center;
             gap: 1.5rem;
@@ -217,13 +230,6 @@
             font-size: 0.8rem;
             letter-spacing: 0.1em;
             color: var(--text-secondary);
-            opacity: 0;
-            animation: fadeInHUD 1s 1s var(--easing) forwards;
-        }
-
-        @keyframes fadeInHUD {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
         }
 
         .hud-item {
@@ -560,11 +566,12 @@
         }
 
         @media (max-width: 1000px) {
+            .hero-bottom { flex-direction: column; align-items: flex-start; gap: 3rem; }
+            .hero-hud { width: 100%; flex-wrap: wrap; }
+            .typing-text { border-right: none; animation: none; white-space: normal; }
             .about-grid, .project-card, .skill-group { grid-template-columns: 1fr; gap: 3rem; }
             .hero h1 { font-size: 4rem; }
             h2 { font-size: 3rem; }
-            .hero-hud { bottom: 0; left: 2rem; right: auto; transform: translateY(50%); z-index: 10; animation: none; opacity: 1; flex-wrap: wrap; }
-            .typing-text { border-right: none; animation: none; white-space: normal; }
             .project-info { padding: 2rem; }
             .project-metrics { border-left: none; border-top: 1px solid var(--border); padding: 2rem; flex-direction: row; flex-wrap: wrap; }
             .cta-buttons { flex-direction: column; align-items: center; }
@@ -587,24 +594,29 @@
 
         <section class="hero">
             <div class="hero-content">
-                <span class="mono-label hero-anim" style="display: block; margin-bottom: 1.5rem; color: var(--accent);">Backend & AI Application Development</span>
-                <h1 class="hero-anim">Architecting scalable <span>production systems.</span></h1>
-                <p class="hero-anim">Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
-            </div>
-            
-            <!-- Redesigned Horizontal System HUD -->
-            <div class="hero-hud">
-                <div class="hud-item highlight">
-                    <div class="status-dot"></div>
-                    SYS.ONLINE
-                </div>
-                <div class="hud-divider"></div>
-                <div class="hud-item typing-text">
-                    LOC: MUMBAI, IND (19.07°N 72.87°E)
-                </div>
-                <div class="hud-divider"></div>
-                <div class="hud-item" id="live-clock">
-                    --:--:--
+                <span class="mono-label hero-anim" style="display: block; margin-bottom: 2rem; color: var(--accent);">Backend & AI Application Development</span>
+                
+                <!-- The heading now spans horizontally filling the space -->
+                <h1 class="hero-anim">Architecting scalable <span class="italic-text">production systems.</span></h1>
+                
+                <!-- The paragraph and HUD are grouped in a grid at the bottom -->
+                <div class="hero-bottom hero-anim">
+                    <p>Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
+                    
+                    <div class="hero-hud">
+                        <div class="hud-item highlight">
+                            <div class="status-dot"></div>
+                            SYS.ONLINE
+                        </div>
+                        <div class="hud-divider"></div>
+                        <div class="hud-item typing-text">
+                            LOC: MUMBAI, IND (19.07°N 72.87°E)
+                        </div>
+                        <div class="hud-divider"></div>
+                        <div class="hud-item" id="live-clock">
+                            --:--:--
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
