@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashmit Vijay Singh | Backend & AI Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --surface-color: #121216;
+            --surface-hover: #1a1a20;
+            --text-primary: #f0f0f5;
+            --text-secondary: #9aa0a6;
+            --accent: #00ffb2;
+            --border: #24242c;
+
+            --font-heading: 'Playfair Display', serif;
+            --font-mono: 'Fira Code', monospace;
+
+            --section-pad: 8rem 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: default;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            line-height: 1.6;
+            font-size: 18px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 4rem;
+            margin-bottom: 3.5rem;
+            color: var(--text-primary);
+        }
+        
+        .mono-label {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--text-primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Nav */
+        nav {
+            padding: 2.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .logo {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        nav .logo::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        nav .links a {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            margin-left: 2.5rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        nav .links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+        }
+
+        .status-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .hero h1 {
+            font-size: clamp(4.5rem, 9vw, 8rem);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+        
+        .hero h1 span {
+            color: var(--text-secondary);
+            font-style: italic;
+            font-weight: 400;
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 650px;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .hero-anchor {
+            position: absolute;
+            right: 2rem;
+            bottom: 4rem;
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 0.8rem;
+            writing-mode: vertical-rl;
+            letter-spacing: 0.25em;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hero-anchor::before {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 80px;
+            background-color: var(--accent);
+        }
+
+        /* About */
+        .about-section {
+            padding: var(--section-pad);
+            border-top: 1px solid var(--border);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Skills */
+        .skills-section {
+            padding: var(--section-pad);
+        }
+
+        .skill-group {
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            align-items: start;
+        }
+
+        .pill-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pill {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 0.5rem 1.25rem;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+        
+        .pill:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        /* Projects */
+        .projects-section {
+            padding-bottom: 10rem;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5rem;
+        }
+
+        .project-card {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            border: 1px solid var(--border);
+            background: var(--surface-color);
+            position: relative;
+        }
+
+        .project-info {
+            padding: 4rem;
+        }
+
+        .project-info h3 {
+            font-size: 3rem;
+            margin: 1rem 0 1.5rem 0;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .project-desc ul {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .project-desc li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-desc li::before {
+            content: '—';
+            font-family: var(--font-mono);
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+        }
+        
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+        }
+        
+        .project-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .project-links a:hover::after {
+            width: 100%;
+        }
+
+        .project-metrics {
+            background: var(--bg-color);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3rem;
+            border-left: 1px solid var(--border);
+        }
+
+        .metric-item .value {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            color: var(--accent);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact CTA */
+        .contact-cta {
+            padding: 10rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-cta h2 {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            display: inline-block;
+            font-family: var(--font-mono);
+            background: var(--text-primary);
+            color: var(--bg-color);
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn.email-btn {
+            text-transform: lowercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 255, 178, 0.2);
+            background: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .btn.outline {
+            background: transparent;
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn.outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        footer .socials a {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-left: 2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        footer .socials a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 1000px) {
+            .about-grid, .project-card, .skill-group { grid-template-columns: 1fr; gap: 3rem; }
+            .hero h1 { font-size: 4rem; }
+            h2 { font-size: 3rem; }
+            .hero-anchor { display: none; }
+            .project-info { padding: 2rem; }
+            .project-metrics { border-left: none; border-top: 1px solid var(--border); padding: 2rem; flex-direction: row; flex-wrap: wrap; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            footer { justify-content: center; text-align: center; }
+            footer .socials a { margin: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="logo">ASHMIT VIJAY SINGH</div>
+            <div class="links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Work</a>
+            </div>
+        </nav>
+
+        <section class="hero reveal">
+            <div class="hero-content">
+                <div class="status-badge">Available for internships · July 2026</div>
+                <h1>Architecting scalable <span>production systems.</span></h1>
+                <p>Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
+            </div>
+            <div class="hero-anchor">LOCATION: MUMBAI, INDIA</div>
+        </section>
+
+        <section id="about" class="about-section reveal">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2>Engineering Context</h2>
+                    <p>I build and deploy production systems leveraging LLMs, NLP pipelines, REST APIs, and cloud platforms.</p>
+                    <p>Currently pursuing my B.E. in Computer Engineering at SSJCET, Mumbai University (2023-2027). I maintain a strong foundation in DSA, OOP, databases, and software engineering with a focus on building practical, scalable solutions.</p>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <span class="stat-value">03</span>
+                        <span class="mono-label">Production Apps</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">95%</span>
+                        <span class="mono-label">NLP Topic Accuracy</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">500+</span>
+                        <span class="mono-label">Articles Scored/Day</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">< 3s</span>
+                        <span class="mono-label">LLM Multi-Turn Resp.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills-section reveal">
+            <h2>Technical Stack</h2>
+            <div>
+                <div class="skill-group">
+                    <div class="mono-label">Languages</div>
+                    <div class="pill-cloud">
+                        <span class="pill">Python</span>
+                        <span class="pill">SQL</span>
+                        <span class="pill">C++</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="mono-label">Backend & Databases</div>
+                    <div class="pill-cloud">
+                        <span class="pill">Flask</span>
+                        <span class="pill">FastAPI</span>
+                        <span class="pill">REST APIs</span>
+                        <span class="pill">JSON Handling</span>
+                        <span class="pill">PostgreSQL</span>
+                        <span class="pill">SQLite</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="mono-label">AI / ML Integration</div>
+                    <div class="pill-cloud">
+                        <span class="pill">LLM Integration</span>
+                        <span class="pill">NLP</span>
+                        <span class="pill">TF-IDF</span>
+                        <span class="pill">Scikit-Learn</span>
+                        <span class="pill">NumPy</span>
+                        <span class="pill">Pandas</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="mono-label">Infrastructure / Tools</div>
+                    <div class="pill-cloud">
+                        <span class="pill">AWS</span>
+                        <span class="pill">Render</span>
+                        <span class="pill">Git / GitHub</span>
+                        <span class="pill">VS Code</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects-section reveal">
+            <h2>Deployed Systems</h2>
+            <div class="project-list">
+                
+                <!-- Project 1 -->
+                <article class="project-card reveal">
+                    <div class="project-info">
+                        <span class="mono-label">Educational Tech</span>
+                        <h3>ASHLYSIS</h3>
+                        <p class="project-desc">AI Exam Intelligence Platform utilizing Python, Flask, Gemini API, TF-IDF, and PyMuPDF, deployed on Render.</p>
+                        <div class="project-desc">
+                            <ul>
+                                <li>Built NLP pipeline using TF-IDF and semantic similarity achieving ~95% topic-detection accuracy.</li>
+                                <li>Integrated Gemini LLM to automate question analysis and generate personalised study plans.</li>
+                                <li>Designed Flask backend with PyMuPDF OCR workflows for structured extraction.</li>
+                            </ul>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/Ashlysis-done" target="_blank">View GitHub</a>
+                            <a href="https://ashlysis.onrender.com" target="_blank">Live Demo</a>
+                        </div>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric-item">
+                            <span class="value">95%</span>
+                            <span class="mono-label">Topic Detection</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="value">2-6</span>
+                            <span class="mono-label">PDFs Processed</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card reveal">
+                    <div class="project-info">
+                        <span class="mono-label">Financial Tech</span>
+                        <h3>SentiFi</h3>
+                        <p class="project-desc">AI Market Sentiment Analyzer utilizing Python, FastAPI, NLP, and PostgreSQL.</p>
+                        <div class="project-desc">
+                            <ul>
+                                <li>Aggregates financial news, generating BUY/HOLD/SELL signals across 500+ equity tickers.</li>
+                                <li>Designed batch NLP scoring pipeline processing 500+ articles/day.</li>
+                                <li>Built interactive dashboard visualising sentiment trends and confidence scores.</li>
+                            </ul>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/Stockfi" target="_blank">View GitHub</a>
+                            <a href="https://stockfi-uq2v.onrender.com/dashboard/" target="_blank">Live Demo</a>
+                        </div>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric-item">
+                            <span class="value">< 3s</span>
+                            <span class="mono-label">API Response Time</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="value">500+</span>
+                            <span class="mono-label">Articles/Day</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card reveal">
+                    <div class="project-info">
+                        <span class="mono-label">Health Tech</span>
+                        <h3>Dadi Ki Dawai</h3>
+                        <p class="project-desc">AI Healthcare Assistant utilizing Python, Flask, Groq LLM, REST API, and JavaScript.</p>
+                        <div class="project-desc">
+                            <ul>
+                                <li>LLM-powered assistant handling 20+ symptom categories with context-aware conversations.</li>
+                                <li>Secure REST APIs for health report generation, conversation history, and session management.</li>
+                                <li>Deployed with a responsive mobile and desktop layout.</li>
+                            </ul>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/final-health.git" target="_blank">View GitHub</a>
+                            <a href="https://dadi-healthchat.onrender.com" target="_blank">Live Demo</a>
+                        </div>
+                    </div>
+                    <div class="project-metrics">
+                        <div class="metric-item">
+                            <span class="value">20+</span>
+                            <span class="mono-label">Symptom Categories</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="value">< 3s</span>
+                            <span class="mono-label">Response Time</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="contact-cta reveal">
+            <h2>Get In Touch</h2>
+            <div class="cta-buttons">
+                <a href="mailto:ashmitsingh702@gmail.com" class="btn email-btn">ashmitsingh702@gmail.com</a>
+                <a href="FINAL CURRENT FINAL.pdf" download="Ashmit_Vijay_Singh_CV.pdf" class="btn outline">Download CV</a>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="socials">
+            <a href="https://github.com/Ashmit-702" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/ashmitvsingh" target="_blank">LinkedIn</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            document.querySelectorAll('.reveal').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
