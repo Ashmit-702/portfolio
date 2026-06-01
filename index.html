@@ -21,6 +21,7 @@
             --font-mono: 'Fira Code', monospace;
 
             --section-pad: 8rem 0;
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -38,18 +39,40 @@
             font-size: 18px;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        /* Ambient Background Animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 255, 178, 0.03) 0%, transparent 40%);
+            z-index: -1;
+            animation: ambientGlow 15s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes ambientGlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(5%, 5%); }
         }
 
         .container {
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 2rem;
+            position: relative;
         }
 
+        /* Smooth Reveal Animations */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: opacity 1s var(--easing), transform 1s var(--easing);
         }
         .reveal.active {
             opacity: 1;
@@ -89,6 +112,13 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
+            animation: slideDown 1s var(--easing) forwards;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        @keyframes slideDown {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         nav .logo {
@@ -108,6 +138,7 @@
             height: 8px;
             background: var(--accent);
             border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
         }
 
         nav .links a {
@@ -124,7 +155,7 @@
 
         /* Hero */
         .hero {
-            min-height: 80vh;
+            min-height: 85vh;
             display: flex;
             align-items: center;
             position: relative;
@@ -132,6 +163,20 @@
 
         .hero-content {
             max-width: 1000px;
+        }
+
+        /* Staggered Hero Text Reveal */
+        .hero-anim {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: textReveal 1s var(--easing) forwards;
+        }
+        .hero-anim:nth-child(1) { animation-delay: 0.2s; }
+        .hero-anim:nth-child(2) { animation-delay: 0.4s; }
+        .hero-anim:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes textReveal {
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero h1 {
@@ -154,61 +199,48 @@
             margin-bottom: 3rem;
         }
 
-        /* Advanced Creative Hero Anchor */
-        .hero-anchor {
+        /* --- REDESIGNED SYSTEM HUD (Hero Anchor) --- */
+        .hero-hud {
             position: absolute;
-            right: 2rem;
+            right: 0;
             bottom: 4rem;
             display: flex;
-            flex-direction: column;
             align-items: center;
             gap: 1.5rem;
-        }
-
-        .anchor-line {
-            width: 1px;
-            height: 100px;
-            background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--accent));
-            position: relative;
-        }
-
-        /* Subtle scanning animation on the line */
-        .anchor-line::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -1px;
-            width: 3px;
-            height: 15px;
-            background: var(--accent);
-            border-radius: 3px;
-            box-shadow: 0 0 10px var(--accent);
-            animation: scan 3s infinite ease-in-out;
-        }
-
-        @keyframes scan {
-            0% { top: -15px; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        .anchor-content {
+            padding: 1rem 1.5rem;
+            background: rgba(18, 18, 22, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
             color: var(--text-secondary);
-            font-size: 0.75rem;
-            writing-mode: vertical-rl;
-            letter-spacing: 0.2em;
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
+            opacity: 0;
+            animation: fadeInHUD 1s 1s var(--easing) forwards;
         }
 
-        .anchor-highlight {
-            color: var(--accent);
+        @keyframes fadeInHUD {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .hud-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .hud-item.highlight {
+            color: var(--accent);
+        }
+
+        .hud-divider {
+            width: 1px;
+            height: 1.2rem;
+            background-color: var(--border);
         }
 
         .status-dot {
@@ -226,12 +258,26 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        .anchor-divider {
-            color: var(--border);
-            font-weight: 300;
+        /* Typing animation for location */
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            border-right: 2px solid var(--accent);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            max-width: fit-content;
         }
 
-        /* About */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent); }
+        }
+
+        /* About & Stats */
         .about-section {
             padding: var(--section-pad);
             border-top: 1px solid var(--border);
@@ -262,20 +308,27 @@
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.5s var(--easing);
         }
         
         .stat-card:hover {
             border-color: var(--accent);
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 178, 0.05);
+            background: var(--surface-hover);
         }
 
-        .stat-value {
+        .stat-value-container {
             font-family: var(--font-mono);
             font-size: 3rem;
             color: var(--text-primary);
-            display: block;
+            display: flex;
+            align-items: baseline;
             margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: var(--accent);
         }
 
         /* Skills */
@@ -310,7 +363,8 @@
         
         .pill:hover {
             border-color: var(--text-primary);
-            color: var(--text-primary);
+            color: var(--bg-color);
+            background: var(--text-primary);
         }
 
         /* Projects */
@@ -330,6 +384,13 @@
             border: 1px solid var(--border);
             background: var(--surface-color);
             position: relative;
+            transition: all 0.5s var(--easing);
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 178, 0.06);
         }
 
         .project-info {
@@ -502,7 +563,8 @@
             .about-grid, .project-card, .skill-group { grid-template-columns: 1fr; gap: 3rem; }
             .hero h1 { font-size: 4rem; }
             h2 { font-size: 3rem; }
-            .hero-anchor { display: none; }
+            .hero-hud { bottom: 0; left: 2rem; right: auto; transform: translateY(50%); z-index: 10; animation: none; opacity: 1; flex-wrap: wrap; }
+            .typing-text { border-right: none; animation: none; white-space: normal; }
             .project-info { padding: 2rem; }
             .project-metrics { border-left: none; border-top: 1px solid var(--border); padding: 2rem; flex-direction: row; flex-wrap: wrap; }
             .cta-buttons { flex-direction: column; align-items: center; }
@@ -523,28 +585,28 @@
             </div>
         </nav>
 
-        <section class="hero reveal">
+        <section class="hero">
             <div class="hero-content">
-                <span class="mono-label" style="display: block; margin-bottom: 1.5rem; color: var(--accent);">Backend & AI Application Development</span>
-                <h1>Architecting scalable <span>production systems.</span></h1>
-                <p>Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
+                <span class="mono-label hero-anim" style="display: block; margin-bottom: 1.5rem; color: var(--accent);">Backend & AI Application Development</span>
+                <h1 class="hero-anim">Architecting scalable <span>production systems.</span></h1>
+                <p class="hero-anim">Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
             </div>
             
-            <!-- Upgraded Creative Hero Anchor -->
-            <div class="hero-anchor">
-                <div class="anchor-line"></div>
-                <div class="anchor-content">
-                    <div class="anchor-highlight">
-                        <div class="status-dot"></div>
-                        SYS.ONLINE
-                    </div>
-                    <span class="anchor-divider">/</span>
-                    <span>UTC+05:30</span>
-                    <span class="anchor-divider">/</span>
-                    <span>19.07°N 72.87°E</span>
+            <!-- Redesigned Horizontal System HUD -->
+            <div class="hero-hud">
+                <div class="hud-item highlight">
+                    <div class="status-dot"></div>
+                    SYS.ONLINE
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-item typing-text">
+                    LOC: MUMBAI, IND (19.07°N 72.87°E)
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-item" id="live-clock">
+                    --:--:--
                 </div>
             </div>
-
         </section>
 
         <section id="about" class="about-section reveal">
@@ -556,19 +618,27 @@
                 </div>
                 <div class="stat-grid">
                     <div class="stat-card">
-                        <span class="stat-value">03</span>
+                        <div class="stat-value-container">
+                            <span class="stat-value counter" data-target="3">0</span>
+                        </div>
                         <span class="mono-label">Production Apps</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-value">95%</span>
+                        <div class="stat-value-container">
+                            <span class="stat-value counter" data-target="95">0</span>%
+                        </div>
                         <span class="mono-label">NLP Topic Accuracy</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-value">500+</span>
+                        <div class="stat-value-container">
+                            <span class="stat-value counter" data-target="500">0</span>+
+                        </div>
                         <span class="mono-label">Articles Scored/Day</span>
                     </div>
                     <div class="stat-card">
-                        <span class="stat-value">< 3s</span>
+                        <div class="stat-value-container">
+                            <<span class="stat-value">3</span>s
+                        </div>
                         <span class="mono-label">LLM Multi-Turn Resp.</span>
                     </div>
                 </div>
@@ -736,10 +806,27 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // --- 1. Live Clock for HUD ---
+            function updateClock() {
+                const now = new Date();
+                // Format to local time string (HH:MM:SS)
+                const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+                document.getElementById('live-clock').textContent = timeString + " IST";
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // --- 2. Scroll Reveal Observer ---
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
+                        
+                        // Trigger Number Counter if it's the stats section
+                        if(entry.target.classList.contains('about-section')) {
+                            startCounters();
+                        }
+
                         observer.unobserve(entry.target);
                     }
                 });
@@ -752,6 +839,34 @@
             document.querySelectorAll('.reveal').forEach(element => {
                 observer.observe(element);
             });
+
+            // --- 3. Number Counter Animation ---
+            let countersStarted = false;
+            function startCounters() {
+                if (countersStarted) return;
+                countersStarted = true;
+                
+                const counters = document.querySelectorAll('.counter');
+                const speed = 200; // lower = faster
+                
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const isPercentage = target === 95; // format helper
+                    const updateCount = () => {
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+                        
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 15);
+                        } else {
+                            // Formatting fixes for display precision
+                            counter.innerText = target < 10 && !isPercentage ? '0' + target : target;
+                        }
+                    };
+                    updateCount();
+                });
+            }
         });
     </script>
 </body>
