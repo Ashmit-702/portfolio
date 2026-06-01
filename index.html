@@ -154,26 +154,81 @@
             margin-bottom: 3rem;
         }
 
+        /* Advanced Creative Hero Anchor */
         .hero-anchor {
             position: absolute;
             right: 2rem;
             bottom: 4rem;
-            font-family: var(--font-mono);
-            color: var(--accent);
-            font-size: 0.8rem;
-            writing-mode: vertical-rl;
-            letter-spacing: 0.25em;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 1.5rem;
         }
 
-        .hero-anchor::before {
-            content: '';
-            display: block;
+        .anchor-line {
             width: 1px;
-            height: 80px;
-            background-color: var(--accent);
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, var(--border) 20%, var(--accent));
+            position: relative;
+        }
+
+        /* Subtle scanning animation on the line */
+        .anchor-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1px;
+            width: 3px;
+            height: 15px;
+            background: var(--accent);
+            border-radius: 3px;
+            box-shadow: 0 0 10px var(--accent);
+            animation: scan 3s infinite ease-in-out;
+        }
+
+        @keyframes scan {
+            0% { top: -15px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .anchor-content {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            writing-mode: vertical-rl;
+            letter-spacing: 0.2em;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .anchor-highlight {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .anchor-divider {
+            color: var(--border);
+            font-weight: 300;
         }
 
         /* About */
@@ -474,7 +529,22 @@
                 <h1>Architecting scalable <span>production systems.</span></h1>
                 <p>Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
             </div>
-            <div class="hero-anchor">LOCATION: MUMBAI, INDIA</div>
+            
+            <!-- Upgraded Creative Hero Anchor -->
+            <div class="hero-anchor">
+                <div class="anchor-line"></div>
+                <div class="anchor-content">
+                    <div class="anchor-highlight">
+                        <div class="status-dot"></div>
+                        SYS.ONLINE
+                    </div>
+                    <span class="anchor-divider">/</span>
+                    <span>UTC+05:30</span>
+                    <span class="anchor-divider">/</span>
+                    <span>19.07°N 72.87°E</span>
+                </div>
+            </div>
+
         </section>
 
         <section id="about" class="about-section reveal">
@@ -554,6 +624,7 @@
             <h2>Deployed Systems</h2>
             <div class="project-list">
                 
+                <!-- Project 1 -->
                 <article class="project-card reveal">
                     <div class="project-info">
                         <span class="mono-label">Educational Tech</span>
@@ -583,6 +654,7 @@
                     </div>
                 </article>
 
+                <!-- Project 2 -->
                 <article class="project-card reveal">
                     <div class="project-info">
                         <span class="mono-label">Financial Tech</span>
@@ -612,6 +684,7 @@
                     </div>
                 </article>
 
+                <!-- Project 3 -->
                 <article class="project-card reveal">
                     <div class="project-info">
                         <span class="mono-label">Health Tech</span>
