@@ -153,14 +153,14 @@
             color: var(--accent);
         }
 
-        /* Hero REDESIGN */
+        /* Hero */
         .hero {
             min-height: 85vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
-            padding: 4rem 0; /* Padding for spatial balance */
+            padding: 4rem 0;
         }
 
         .hero-content {
@@ -184,7 +184,6 @@
         }
 
         .hero h1 {
-            /* Using vw to naturally scale across the horizontal width of the screen */
             font-size: clamp(3.5rem, 8vw, 8rem); 
             margin-bottom: 4rem;
             letter-spacing: -0.02em;
@@ -195,7 +194,6 @@
             color: var(--text-secondary);
             font-style: italic;
             font-weight: 400;
-            /* Removed display: block; so it stays horizontal */
         }
 
         .hero-bottom {
@@ -215,7 +213,7 @@
             margin: 0;
         }
 
-        /* System HUD integrated into layout flow */
+        /* System HUD */
         .hero-hud {
             display: flex;
             align-items: center;
@@ -542,27 +540,66 @@
             box-shadow: none;
         }
 
-        /* Footer */
+        /* Footer - Redesigned to make links central and highly visible */
         footer {
-            padding: 3rem 0;
+            padding: 6rem 0;
             border-top: 1px solid var(--border);
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
+        }
+
+        footer .socials {
+            display: flex;
+            gap: 4rem;
         }
 
         footer .socials a {
             font-family: var(--font-mono);
-            font-size: 0.85rem;
+            font-size: 1.75rem; /* Noticeably larger */
+            font-weight: 500;
             color: var(--text-primary);
-            margin-left: 2rem;
             text-transform: uppercase;
-            cursor: pointer;
-            transition: color 0.3s ease;
+            letter-spacing: 0.15em;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            position: relative;
         }
         
+        footer .socials a::before {
+            content: '↗';
+            color: var(--accent);
+            font-size: 1.5rem;
+            transition: transform 0.3s var(--easing);
+        }
+
+        footer .socials a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s var(--easing);
+            transform-origin: right;
+        }
+
         footer .socials a:hover {
             color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        footer .socials a:hover::before {
+            transform: translate(4px, -4px);
+        }
+
+        footer .socials a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         @media (max-width: 1000px) {
@@ -575,8 +612,11 @@
             .project-info { padding: 2rem; }
             .project-metrics { border-left: none; border-top: 1px solid var(--border); padding: 2rem; flex-direction: row; flex-wrap: wrap; }
             .cta-buttons { flex-direction: column; align-items: center; }
-            footer { justify-content: center; text-align: center; }
-            footer .socials a { margin: 0 1rem; }
+            
+            /* Responsive adjustments for new footer */
+            footer { padding: 4rem 0; }
+            footer .socials { flex-direction: column; gap: 2.5rem; align-items: center; }
+            footer .socials a { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -596,10 +636,8 @@
             <div class="hero-content">
                 <span class="mono-label hero-anim" style="display: block; margin-bottom: 2rem; color: var(--accent);">Backend & AI Application Development</span>
                 
-                <!-- The heading now spans horizontally filling the space -->
                 <h1 class="hero-anim">Architecting scalable <span class="italic-text">production systems.</span></h1>
                 
-                <!-- The paragraph and HUD are grouped in a grid at the bottom -->
                 <div class="hero-bottom hero-anim">
                     <p>Computer Engineering student specializing in Python-based backend and AI application development. Building practical solutions across healthcare, fintech, and education.</p>
                     
@@ -809,7 +847,8 @@
 
     </div>
 
-    <footer>
+    <!-- Centered, Highly Visible Footer -->
+    <footer class="reveal">
         <div class="socials">
             <a href="https://github.com/Ashmit-702" target="_blank">GitHub</a>
             <a href="https://www.linkedin.com/in/ashmitvsingh" target="_blank">LinkedIn</a>
@@ -821,7 +860,6 @@
             // --- 1. Live Clock for HUD ---
             function updateClock() {
                 const now = new Date();
-                // Format to local time string (HH:MM:SS)
                 const timeString = now.toLocaleTimeString('en-US', { hour12: false });
                 document.getElementById('live-clock').textContent = timeString + " IST";
             }
@@ -834,7 +872,6 @@
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
                         
-                        // Trigger Number Counter if it's the stats section
                         if(entry.target.classList.contains('about-section')) {
                             startCounters();
                         }
@@ -859,11 +896,11 @@
                 countersStarted = true;
                 
                 const counters = document.querySelectorAll('.counter');
-                const speed = 200; // lower = faster
+                const speed = 200; 
                 
                 counters.forEach(counter => {
                     const target = +counter.getAttribute('data-target');
-                    const isPercentage = target === 95; // format helper
+                    const isPercentage = target === 95; 
                     const updateCount = () => {
                         const count = +counter.innerText;
                         const inc = target / speed;
@@ -872,7 +909,6 @@
                             counter.innerText = Math.ceil(count + inc);
                             setTimeout(updateCount, 15);
                         } else {
-                            // Formatting fixes for display precision
                             counter.innerText = target < 10 && !isPercentage ? '0' + target : target;
                         }
                     };
