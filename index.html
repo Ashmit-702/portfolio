@@ -7,35 +7,45 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           1. COLOR SYSTEM & VARIABLES
+           ========================================================================== */
         :root {
-            /* Cinematic Dark Palette */
-            --bg-base: #040508;
-            --bg-surface: #0a0c13;
-            --bg-elevated: #111421;
+            /* Layered Dark System - Not Pure Black */
+            --bg-base: #0B0E14;        /* Deep Midnight Slate */
+            --bg-surface: #131722;     /* Slightly lighter for cards */
+            --bg-elevated: #1A1F2D;    /* For hovered elements */
             
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-tertiary: #64748b;
+            /* Typography */
+            --text-primary: #F8F9FA;   /* Crisp, high-contrast off-white */
+            --text-secondary: #94A3B8; /* Muted slate for descriptions */
+            --text-tertiary: #64748B;  /* Deeper slate for metadata */
             
-            /* Deep Indigo & Violet Accents */
-            --accent-primary: #818cf8;
-            --accent-secondary: #a78bfa;
+            /* Accents */
+            --accent-indigo: #818CF8;
+            --accent-violet: #A78BFA;
             --accent-glow: rgba(129, 140, 248, 0.15);
             
-            --border-light: rgba(255, 255, 255, 0.06);
-            --border-hover: rgba(129, 140, 248, 0.25);
+            /* Borders & UI */
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-active: rgba(129, 140, 248, 0.3);
             
+            /* Fonts */
             --font-display: 'Playfair Display', serif;
             --font-body: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             
-            --transition-smooth: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-fast: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Animation Curves */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out-sine: cubic-bezier(0.445, 0.05, 0.55, 0.95);
         }
 
+        /* ==========================================================================
+           2. BASE & RESET
+           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -57,54 +67,42 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Ambient Layered Background */
-        .ambient-bg {
+        /* Ambient Cinematic Background Layers */
+        .ambient-layer {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
+            inset: 0;
             pointer-events: none;
             z-index: -1;
-            background-color: var(--bg-base);
             overflow: hidden;
         }
-        
-        .ambient-orb {
+
+        .ambient-gradient {
             position: absolute;
+            top: -30%; left: 20%;
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(46, 52, 84, 0.4) 0%, transparent 60%);
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            animation: drift 25s infinite alternate ease-in-out;
+            filter: blur(80px);
+            animation: breathe 15s var(--ease-in-out-sine) infinite alternate;
         }
-        
-        .orb-1 {
-            top: -10%; left: -10%;
-            width: 50vw; height: 50vw;
-            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
-        }
-        
-        .orb-2 {
+
+        .ambient-gradient-2 {
+            position: absolute;
             bottom: -20%; right: -10%;
-            width: 60vw; height: 60vw;
-            background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
-            animation-delay: -10s;
+            width: 70vw; height: 70vw;
+            background: radial-gradient(circle, rgba(62, 45, 87, 0.3) 0%, transparent 60%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: breathe 20s var(--ease-in-out-sine) infinite alternate-reverse;
         }
 
-        .grid-overlay {
-            position: absolute; inset: 0;
-            background-image: linear-gradient(var(--border-light) 1px, transparent 1px),
-                              linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
-            background-size: 100px 100px;
-            opacity: 0.15;
-            mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
-        }
-
-        @keyframes drift {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(5%, 5%) scale(1.1); }
+        @keyframes breathe {
+            0% { transform: scale(0.9) translate(0, 0); opacity: 0.8; }
+            100% { transform: scale(1.1) translate(-2%, 3%); opacity: 1; }
         }
 
         .container {
-            max-width: 1280px;
+            max-width: 1300px;
             margin: 0 auto;
             padding: 0 2rem;
             position: relative;
@@ -113,381 +111,505 @@
         /* Typography */
         h1, h2, h3, h4 {
             font-family: var(--font-display);
-            font-weight: 400;
-            line-height: 1.2;
+            font-weight: 500;
+            line-height: 1.1;
+            color: var(--text-primary);
         }
 
         .mono {
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-        }
-        
-        .tag {
-            color: var(--accent-primary);
-            background: var(--accent-glow);
-            padding: 0.25rem 0.75rem;
-            border-radius: 100px;
-            border: 1px solid rgba(129, 140, 248, 0.2);
+            letter-spacing: 0.1em;
         }
 
         a {
             color: inherit;
             text-decoration: none;
-            transition: color var(--transition-fast);
+            transition: color 0.3s ease;
         }
-        
-        /* Layout & Utilities */
-        section {
-            padding: 8rem 0;
+
+        /* ==========================================================================
+           3. NAVIGATION
+           ========================================================================== */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
             position: relative;
         }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 5rem;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        
-        .section-title::after {
-            content: '';
-            height: 1px;
-            flex-grow: 1;
-            background: linear-gradient(90deg, var(--border-light), transparent);
+
+        .nav-links a:hover {
+            color: var(--text-primary);
         }
 
-        /* Animation Classes */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s var(--transition-smooth), transform 1s var(--transition-smooth);
-            will-change: opacity, transform;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Hero */
+        /* ==========================================================================
+           4. HERO SECTION
+           ========================================================================== */
         .hero {
-            height: 85vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
+            align-items: flex-start;
             position: relative;
-        }
-
-        .hero h1 {
-            font-size: clamp(3.5rem, 8vw, 7.5rem);
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-            color: transparent;
-            background: linear-gradient(180deg, #fff 0%, #a5b4fc 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: textReveal 1.5s var(--transition-smooth) forwards 0.2s;
-        }
-
-        .hero p {
-            color: var(--text-secondary);
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            letter-spacing: 0.05em;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: textReveal 1.5s var(--transition-smooth) forwards 0.5s;
-        }
-        
-        @keyframes textReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Currently */
-        .currently-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border-light);
-            border-radius: 100px;
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            animation: textReveal 1.5s var(--transition-smooth) forwards 0.8s;
-            transition: border-color var(--transition-fast), background var(--transition-fast);
-        }
-        
-        .currently-wrapper:hover {
-            border-color: var(--border-hover);
-            background: rgba(255,255,255,0.04);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            box-shadow: 0 0 12px var(--accent-primary);
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
-
-        /* Project Links */
-        .project-links {
-            display: flex;
-            gap: 2rem;
-            margin-top: 2rem;
-            align-items: center;
-        }
-
-        .project-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-primary);
-            padding-bottom: 2px;
-            position: relative;
-        }
-        
-        .project-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 1px;
-            background: var(--accent-primary);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform var(--transition-fast);
-        }
-
-        .project-links a:hover {
-            color: var(--accent-primary);
-        }
-        .project-links a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        /* Interactive Card Base */
-        .interactive-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            position: relative;
-            overflow: hidden;
-            transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-        }
-        
-        .interactive-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
-        }
-
-        /* Special Mention: GitWicket */
-        .special-mention-container {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 4rem;
-            align-items: center;
-            padding: 5rem;
-            background: radial-gradient(circle at 100% 50%, var(--bg-elevated), var(--bg-surface));
-            border-radius: 2px;
-        }
-
-        .gw-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
             z-index: 2;
         }
 
-        .gw-title {
-            font-size: clamp(3rem, 5vw, 4.5rem);
-            color: #fff;
-            line-height: 1;
+        /* High Visibility Name */
+        .hero-name {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            margin-bottom: 1rem;
+            
+            /* Entrance Choreography */
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            animation: heroReveal 1.2s var(--ease-out-expo) forwards;
         }
 
-        .gw-desc {
+        .hero-subtitle {
             color: var(--text-secondary);
-            font-size: 1.15rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            letter-spacing: 0.05em;
+            
+            opacity: 0;
+            transform: translateY(15px);
+            animation: heroReveal 1.2s var(--ease-out-expo) forwards 0.15s;
         }
 
-        .gw-visual {
+        @keyframes heroReveal {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Currently Indicator */
+        .currently-badge {
+            margin-top: 4rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 100px;
+            backdrop-filter: blur(10px);
+            
+            opacity: 0;
+            transform: translateY(15px);
+            animation: heroReveal 1.2s var(--ease-out-expo) forwards 0.3s;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .currently-badge:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border-active);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-indigo);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-indigo);
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        /* ==========================================================================
+           5. SECTION LAYOUTS & INTERACTION
+           ========================================================================== */
+        section {
+            padding: 6rem 0;
             position: relative;
-            height: 100%;
-            min-height: 400px;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 1.5rem;
         }
 
-        /* SVG Artworks (Custom for each project) */
-        .svg-art {
-            width: 100%;
-            height: auto;
-            max-width: 500px;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-            transition: transform var(--transition-smooth);
-        }
-        
-        .interactive-card:hover .svg-art {
-            transform: scale(1.03);
+        .section-header::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--border-subtle), transparent);
         }
 
-        /* Flagship Grid */
-        .flagship-grid {
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Interactive Card System */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3), 0 0 20px var(--accent-glow);
+        }
+
+        /* Links */
+        .project-links {
             display: flex;
-            flex-direction: column;
-            gap: 8rem;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .flagship-card {
+        .project-link {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent-indigo);
+            border-bottom-color: var(--accent-indigo);
+        }
+
+        /* ==========================================================================
+           6. GITWICKET (SPECIAL MENTION)
+           ========================================================================== */
+        .special-mention {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
-            align-items: stretch;
-            border: none;
-            background: transparent;
-            box-shadow: none;
+            padding: 4rem;
+            background: linear-gradient(145deg, var(--bg-surface), var(--bg-base));
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 8rem;
         }
         
-        .flagship-card:hover {
-            transform: none;
-            box-shadow: none;
-            border-color: transparent;
+        .sm-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
         }
 
-        .flagship-card:nth-child(even) {
-            grid-template-columns: 1.2fr 0.8fr;
+        .sm-label {
+            color: var(--accent-violet);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sm-label::before {
+            content: ''; width: 4px; height: 4px; background: var(--accent-violet); border-radius: 50%;
+        }
+
+        .sm-title {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1;
+        }
+
+        .sm-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+        }
+
+        /* GitWicket Bespoke Visual */
+        .gw-visual-container {
+            position: relative;
+            height: 100%;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .gw-art {
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .special-mention:hover .gw-art {
+            transform: rotateY(-5deg) rotateX(5deg) scale(1.02);
+        }
+
+        /* Animated GitHub to Cricket Path */
+        .gw-path { stroke-dasharray: 200; stroke-dashoffset: 200; animation: dashFlow 3s infinite linear; }
+        @keyframes dashFlow { to { stroke-dashoffset: 0; } }
+        
+        .gw-node { animation: nodePulse 2s infinite alternate; }
+        @keyframes nodePulse { from { fill: var(--bg-elevated); } to { fill: var(--accent-indigo); } }
+
+        /* ==========================================================================
+           7. FLAGSHIP PROJECTS
+           ========================================================================== */
+        .flagship-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 6rem;
+        }
+
+        .flagship-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .flagship-item:nth-child(even) {
+            grid-template-columns: 1.1fr 0.9fr;
             direction: rtl;
         }
-        .flagship-card:nth-child(even) > * {
-            direction: ltr;
-        }
+        
+        .flagship-item:nth-child(even) > * { direction: ltr; }
 
         .flagship-content {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            gap: 1.5rem;
-            padding: 2rem 0;
+            gap: 1.25rem;
         }
 
+        .flagship-title { font-size: 2.5rem; }
+        
+        .flagship-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tags span {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            padding: 0.2rem 0.6rem;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255,255,255,0.01);
+        }
+
+        /* Bespoke Flagship Visuals */
         .flagship-visual {
+            height: 400px;
             background: var(--bg-surface);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 3rem;
             position: relative;
             overflow: hidden;
-            transition: border-color var(--transition-fast);
-        }
-        
-        .flagship-card:hover .flagship-visual {
-            border-color: var(--border-hover);
-        }
-        
-        .flagship-visual::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
-            opacity: 0;
-            transition: opacity var(--transition-fast);
-        }
-        .flagship-card:hover .flagship-visual::before {
-            opacity: 1;
+            border-radius: 4px;
         }
 
-        /* Secondary Grid */
+        /* DADI Visual - Health Chat */
+        .dadi-ui {
+            width: 70%;
+            height: 70%;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            background: var(--bg-base);
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            position: relative;
+        }
+        .dadi-bubble {
+            background: var(--bg-elevated);
+            padding: 0.75rem;
+            border-radius: 8px;
+            width: 70%;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+        .dadi-bubble.ai {
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            align-self: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+        .dadi-bubble.ai::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(129,140,248,0.2), transparent);
+            animation: scanline 3s infinite;
+        }
+        @keyframes scanline { 100% { left: 200%; } }
+
+        /* MAINLAND Visual - Arcade/RPG Dungeon */
+        .mainland-grid {
+            width: 80%;
+            height: 80%;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 4px;
+            perspective: 600px;
+            transform: rotateX(20deg) rotateY(-10deg);
+            transition: transform 0.6s ease;
+        }
+        .flagship-visual:hover .mainland-grid {
+            transform: rotateX(10deg) rotateY(0deg);
+        }
+        .ml-cell { background: var(--bg-elevated); border: 1px solid var(--border-subtle); }
+        .ml-cell.path { background: rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.3); }
+        .ml-cell.player { background: var(--accent-violet); box-shadow: 0 0 15px var(--accent-violet); animation: blinkPlayer 1s infinite; }
+        @keyframes blinkPlayer { 50% { opacity: 0.6; } }
+
+        /* NETABOARD Visual - Political Data */
+        .neta-dashboard {
+            width: 80%; height: 70%;
+            display: flex; gap: 1rem;
+        }
+        .neta-col { flex: 1; display: flex; flex-direction: column; gap: 1rem; }
+        .neta-card { background: var(--bg-elevated); border: 1px solid var(--border-subtle); flex: 1; border-radius: 4px; position: relative; overflow: hidden; }
+        .neta-bar { position: absolute; bottom: 0; left: 10%; width: 20%; background: var(--accent-indigo); transition: height 0.5s ease; }
+        .neta-bar-2 { left: 40%; background: var(--text-tertiary); }
+        .neta-bar-3 { left: 70%; background: var(--accent-violet); }
+        .flagship-visual:hover .neta-bar { height: 80% !important; }
+        .flagship-visual:hover .neta-bar-2 { height: 40% !important; }
+        .flagship-visual:hover .neta-bar-3 { height: 60% !important; }
+
+        /* STOCKFI Visual - Financial Sentiment */
+        .stock-chart {
+            width: 80%; height: 60%;
+            border-bottom: 1px solid var(--border-subtle);
+            border-left: 1px solid var(--border-subtle);
+            position: relative;
+            display: flex; align-items: flex-end; justify-content: space-around;
+            padding-bottom: 10px;
+        }
+        .candle { width: 12px; background: var(--text-tertiary); position: relative; }
+        .candle::before { content: ''; position: absolute; width: 2px; height: 150%; background: var(--text-tertiary); left: 5px; top: -25%; z-index: -1; }
+        .candle.bull { background: var(--accent-indigo); }
+        .candle.bull::before { background: var(--accent-indigo); }
+        
+        .sentiment-line {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,80 Q25,20 50,50 T100,10' fill='none' stroke='%23818CF8' stroke-width='2' /%3E%3C/svg%3E");
+            background-size: 100% 100%;
+            opacity: 0.5;
+            transition: opacity 0.4s ease;
+        }
+        .flagship-visual:hover .sentiment-line { opacity: 1; filter: drop-shadow(0 0 8px rgba(129,140,248,0.8)); }
+
+        /* ==========================================================================
+           8. SECONDARY PROJECTS
+           ========================================================================== */
         .secondary-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .secondary-card {
-            padding: 3rem;
+            padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
             height: 100%;
         }
 
-        .secondary-title {
-            font-size: 1.75rem;
-            color: #fff;
-        }
-        
-        .tech-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        .secondary-card .tech-tags {
             margin-top: auto;
-            padding-top: 1.5rem;
-        }
-        
-        .tech-list span {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            border: 1px solid var(--border-light);
-            padding: 0.2rem 0.6rem;
+            padding-top: 2rem;
         }
 
-        /* Other Builds */
+        .secondary-title {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+        
+        .secondary-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           9. OTHER BUILDS (Low Priority)
+           ========================================================================== */
+        .builds-list {
+            display: flex;
+            flex-direction: column;
+        }
+
         .build-row {
             display: grid;
             grid-template-columns: 250px 1fr auto;
             align-items: center;
             padding: 2rem 0;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-subtle);
             gap: 2rem;
-            transition: background var(--transition-fast);
+            transition: background 0.3s ease;
         }
-        
-        .build-row:first-child { border-top: 1px solid var(--border-light); }
+
+        .build-row:first-child { border-top: 1px solid var(--border-subtle); }
         .build-row:hover { background: rgba(255,255,255,0.01); }
 
-        .build-title { font-size: 1.25rem; }
+        .build-title { font-size: 1.25rem; font-family: var(--font-display); }
         .build-desc { color: var(--text-secondary); font-size: 0.95rem; }
 
-        /* How I Ship Pipeline */
+        /* ==========================================================================
+           10. HOW I SHIP (Engineering Pipeline)
+           ========================================================================== */
         .pipeline-container {
+            margin: 4rem 0 6rem 0;
             position: relative;
-            padding: 4rem 0;
         }
 
         .pipeline-track {
             position: absolute;
-            top: 50%; left: 0; width: 100%; height: 1px;
-            background: var(--border-light);
+            top: 50%; left: 0; right: 0;
+            height: 2px;
+            background: var(--border-subtle);
             transform: translateY(-50%);
             z-index: 1;
         }
-        
-        .pipeline-progress {
+
+        .pipeline-signal {
             position: absolute;
-            top: 50%; left: 0; height: 1px;
-            background: var(--accent-primary);
+            top: 50%; left: 0;
+            width: 0%; height: 2px;
+            background: var(--accent-indigo);
             transform: translateY(-50%);
-            width: 0%;
             z-index: 2;
-            transition: width 1.5s var(--transition-smooth);
-            box-shadow: 0 0 10px var(--accent-primary);
-        }
-        
-        .pipeline-container.active .pipeline-progress {
-            width: 100%;
+            box-shadow: 0 0 15px var(--accent-indigo);
+            transition: width 1.5s var(--ease-in-out-sine);
         }
 
         .pipeline-nodes {
@@ -497,62 +619,94 @@
             z-index: 3;
         }
 
-        .node {
+        .p-node {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1.5rem;
-            width: 120px;
-            text-align: center;
+            cursor: default;
         }
 
-        .node-dot {
-            width: 14px;
-            height: 14px;
+        .p-dot {
+            width: 16px; height: 16px;
             background: var(--bg-base);
             border: 2px solid var(--text-tertiary);
             border-radius: 50%;
-            transition: all 0.5s var(--transition-smooth);
+            transition: all 0.4s ease;
             position: relative;
         }
-        
-        .pipeline-container.active .node:nth-child(1) .node-dot { transition-delay: 0s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
-        .pipeline-container.active .node:nth-child(2) .node-dot { transition-delay: 0.3s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
-        .pipeline-container.active .node:nth-child(3) .node-dot { transition-delay: 0.6s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
-        .pipeline-container.active .node:nth-child(4) .node-dot { transition-delay: 0.9s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
-        .pipeline-container.active .node:nth-child(5) .node-dot { transition-delay: 1.2s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
-        .pipeline-container.active .node:nth-child(6) .node-dot { transition-delay: 1.5s; border-color: var(--accent-primary); background: var(--accent-primary); box-shadow: 0 0 15px var(--accent-primary); }
 
-        .ship-details {
+        .p-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .p-hover-content {
+            position: absolute;
+            bottom: -3rem;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            background: var(--bg-elevated);
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .p-node:hover .p-dot { border-color: var(--accent-violet); background: var(--accent-violet); box-shadow: 0 0 15px var(--accent-glow); }
+        .p-node:hover .p-label { color: var(--text-primary); }
+        .p-node:hover .p-hover-content { opacity: 1; transform: translateY(0); }
+
+        /* Reveal states controlled by JS */
+        .pipeline-container.in-view .pipeline-signal { width: 100%; }
+        .pipeline-container.in-view .p-node:nth-child(1) .p-dot { transition-delay: 0.1s; border-color: var(--accent-indigo); }
+        .pipeline-container.in-view .p-node:nth-child(2) .p-dot { transition-delay: 0.4s; border-color: var(--accent-indigo); }
+        .pipeline-container.in-view .p-node:nth-child(3) .p-dot { transition-delay: 0.7s; border-color: var(--accent-indigo); }
+        .pipeline-container.in-view .p-node:nth-child(4) .p-dot { transition-delay: 1.0s; border-color: var(--accent-indigo); }
+        .pipeline-container.in-view .p-node:nth-child(5) .p-dot { transition-delay: 1.3s; border-color: var(--accent-indigo); }
+        .pipeline-container.in-view .p-node:nth-child(6) .p-dot { transition-delay: 1.6s; border-color: var(--accent-indigo); background: var(--accent-indigo); box-shadow: 0 0 20px var(--accent-indigo); }
+
+        .ship-principles {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 4rem;
-            margin-top: 5rem;
-        }
-        
-        .ship-col h4 {
-            color: var(--accent-primary);
-            margin-bottom: 1rem;
-        }
-        
-        .ship-col p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
         }
 
-        /* Tech Stack */
+        .principle h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .principle p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================================================
+           11. TECH STACK
+           ========================================================================== */
         .stack-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 3rem;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 4rem;
         }
-        
-        .stack-col {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+
+        .stack-col h4 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
-        
+
         .stack-list {
             list-style: none;
             display: flex;
@@ -562,7 +716,9 @@
             font-size: 0.95rem;
         }
 
-        /* Footer */
+        /* ==========================================================================
+           12. CONTACT / FOOTER
+           ========================================================================== */
         footer {
             padding: 8rem 0 4rem;
             text-align: center;
@@ -570,15 +726,26 @@
 
         .contact-email {
             font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
-            color: #fff;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            color: var(--text-primary);
             display: inline-block;
             margin-bottom: 3rem;
-            transition: opacity var(--transition-fast);
+            position: relative;
         }
-        
-        .contact-email:hover {
-            opacity: 0.7;
+
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 2px;
+            background: var(--accent-indigo);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s var(--ease-out-expo);
+        }
+
+        .contact-email:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .footer-links {
@@ -587,383 +754,416 @@
             gap: 3rem;
         }
 
-        /* Parallax JS Class */
-        .parallax-element {
-            transition: transform 0.1s ease-out;
+        /* ==========================================================================
+           13. ANIMATION CLASSES (Scroll Reveal)
+           ========================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+            will-change: opacity, transform;
+        }
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Responsive */
+        /* Reduced Motion Fallback */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+            .ambient-gradient, .ambient-gradient-2 { display: none; }
+            .card:hover { transform: none; }
+            .special-mention:hover .gw-art { transform: none; }
+        }
+
+        /* ==========================================================================
+           14. RESPONSIVE
+           ========================================================================== */
         @media (max-width: 1024px) {
-            .special-mention-container {
+            .special-mention, .flagship-item, .flagship-item:nth-child(even) {
                 grid-template-columns: 1fr;
-                padding: 4rem 3rem;
-                text-align: center;
+                gap: 3rem;
             }
-            .gw-content { align-items: center; }
-            .gw-visual { min-height: 300px; }
-            .flagship-card, .flagship-card:nth-child(even) {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            .ship-details { grid-template-columns: 1fr; gap: 3rem; }
-            .pipeline-nodes .mono { font-size: 0.6rem; }
+            .special-mention { padding: 3rem 2rem; }
+            .gw-visual-container { min-height: 250px; }
+            .ship-principles { grid-template-columns: 1fr; gap: 2.5rem; }
+            .stack-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 768px) {
-            section { padding: 5rem 0; }
-            .hero { height: 75vh; }
-            .build-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem 0; }
+            section { padding: 4rem 0; }
+            .hero { min-height: 70vh; }
+            .nav-links { display: none; } /* Kept simple for mobile */
+            
+            .build-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.5rem 0; }
             .build-row .project-links { margin-top: 1rem; }
-            .pipeline-track, .pipeline-progress { display: none; }
+            
+            /* Vertical Pipeline for Mobile */
+            .pipeline-track, .pipeline-signal { display: none; }
             .pipeline-nodes {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 2rem;
-                border-left: 1px solid var(--border-light);
-                padding-left: 2rem;
-                margin-left: 1rem;
+                flex-direction: column; align-items: flex-start; gap: 2rem;
+                border-left: 1px solid var(--border-subtle); padding-left: 2rem; margin-left: 1rem;
             }
-            .node { flex-direction: row; width: auto; }
-            .node-dot { position: absolute; left: -8px; }
+            .p-node { flex-direction: row; }
+            .p-dot { position: absolute; left: -9px; }
+            .p-hover-content { display: none; } /* Hide hover tooltips on mobile */
         }
     </style>
 </head>
 <body>
 
-    <!-- Cinematic Background -->
-    <div class="ambient-bg">
-        <div class="ambient-orb orb-1"></div>
-        <div class="ambient-orb orb-2"></div>
-        <div class="grid-overlay"></div>
+    <!-- Cinematic Background Layers -->
+    <div class="ambient-layer">
+        <div class="ambient-gradient"></div>
+        <div class="ambient-gradient-2"></div>
     </div>
 
     <div class="container">
         
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1>ASHMIT SINGH</h1>
-            <p class="mono">B.Tech Computer Engineering &middot; 2023&ndash;2027</p>
-            
-            <div style="margin-top: 4rem;">
-                <div class="currently-wrapper">
-                    <div class="status-dot"></div>
-                    <span class="mono" style="font-size: 0.7rem; color: var(--text-secondary);">Currently interning at Cerebro Tech.</span>
-                </div>
+        <!-- Navigation -->
+        <nav>
+            <div class="mono" style="color: var(--text-primary); font-weight: 500;">AVS.</div>
+            <div class="nav-links">
+                <a href="#work">Work</a>
+                <a href="#process">Process</a>
+                <a href="#stack">Stack</a>
+                <a href="#contact">Contact</a>
             </div>
-        </section>
+        </nav>
 
-        <!-- GITWICKET: Special Mention -->
-        <section class="reveal">
-            <div class="special-mention-container interactive-card">
-                <div class="gw-content">
-                    <span class="mono tag">Signature Project</span>
-                    <h2 class="gw-title">GITWICKET</h2>
-                    <p class="gw-desc">Analyzes GitHub commit history, issues, and PRs, transforming developer repository activity into dynamic cricket statistics and unique player cards.</p>
+        <!-- Hero -->
+        <header class="hero">
+            <h1 class="hero-name">ASHMIT SINGH</h1>
+            <p class="mono hero-subtitle">B.Tech Computer Engineering &middot; 2023&ndash;2027</p>
+            
+            <div class="currently-badge">
+                <div class="status-dot"></div>
+                <span class="mono" style="font-size: 0.75rem; color: var(--text-secondary);">Currently interning at Cerebro Tech.</span>
+            </div>
+        </header>
+
+        <!-- GITWICKET (Special Mention) -->
+        <section id="work">
+            <div class="special-mention card reveal">
+                <div class="sm-content">
+                    <span class="mono sm-label">Signature Project</span>
+                    <h2 class="sm-title">GITWICKET</h2>
+                    <p class="sm-desc">Analyzes GitHub commit history, issues, and PRs, transforming developer repository activity into dynamic cricket statistics and unique player cards.</p>
                     
-                    <div class="project-links mono">
-                        <a href="https://github.com/Ashmit-702/GitWicket" target="_blank">GitHub ↗</a>
+                    <div class="tech-tags">
+                        <span>API Integration</span><span>Data Visualization</span><span>Analytics</span>
+                    </div>
+
+                    <div class="project-links">
+                        <a href="https://github.com/Ashmit-702/GitWicket" target="_blank" class="project-link">GitHub ↗</a>
+                        <!-- NO LIVE LINK -->
                     </div>
                 </div>
                 
-                <div class="gw-visual parallax-container">
-                    <!-- Custom Abstract SVG for GitWicket (Commits to Cricket concept) -->
-                    <svg class="svg-art parallax-element" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="50" y="20" width="300" height="260" rx="12" fill="#141724" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-                        <!-- Git branch logic -->
-                        <path d="M100 240 Q150 240 150 150 T200 60" stroke="#818cf8" stroke-width="3" stroke-dasharray="6 6"/>
-                        <circle cx="100" cy="240" r="6" fill="#818cf8"/>
-                        <circle cx="150" cy="150" r="6" fill="#a78bfa"/>
-                        <circle cx="200" cy="60" r="6" fill="#818cf8"/>
-                        <!-- Cricket card overlay -->
-                        <rect x="180" y="100" width="140" height="160" rx="8" fill="#1e2235" stroke="#6366f1" stroke-width="2" filter="drop-shadow(0 10px 10px rgba(0,0,0,0.5))"/>
-                        <rect x="200" y="120" width="100" height="60" rx="4" fill="#2a2f4c"/>
-                        <circle cx="250" cy="150" r="16" fill="#a78bfa" opacity="0.8"/>
-                        <rect x="200" y="200" width="60" height="8" rx="4" fill="#475569"/>
-                        <rect x="200" y="220" width="40" height="8" rx="4" fill="#475569"/>
-                        <!-- Animation element -->
-                        <circle cx="100" cy="240" r="12" fill="none" stroke="#818cf8" stroke-width="1">
-                            <animate attributeName="r" values="6; 20; 6" dur="3s" repeatCount="indefinite"/>
-                            <animate attributeName="opacity" values="1; 0; 1" dur="3s" repeatCount="indefinite"/>
-                        </circle>
+                <div class="gw-visual-container">
+                    <!-- Bespoke GitWicket Artwork -->
+                    <svg class="gw-art" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Background Card -->
+                        <rect x="50" y="20" width="300" height="260" rx="12" fill="#131722" stroke="rgba(255,255,255,0.1)"/>
+                        <!-- Animated Path representing Commits -->
+                        <path class="gw-path" d="M80 200 Q150 200 150 140 T220 80" stroke="#818CF8" stroke-width="3" stroke-dasharray="6 6"/>
+                        <!-- Git Nodes -->
+                        <circle class="gw-node" cx="80" cy="200" r="6" stroke="#818CF8" stroke-width="2"/>
+                        <circle class="gw-node" cx="150" cy="140" r="6" stroke="#818CF8" stroke-width="2" style="animation-delay: 0.5s"/>
+                        <circle class="gw-node" cx="220" cy="80" r="6" stroke="#818CF8" stroke-width="2" style="animation-delay: 1s"/>
+                        <!-- Cricket Player Stat Card Mockup -->
+                        <rect x="220" y="80" width="100" height="130" rx="6" fill="#1A1F2D" stroke="rgba(167,139,250,0.4)"/>
+                        <rect x="235" y="95" width="70" height="40" rx="4" fill="#292D3E"/>
+                        <!-- Stat lines -->
+                        <rect x="235" y="150" width="40" height="6" rx="3" fill="#64748B"/>
+                        <rect x="235" y="165" width="60" height="6" rx="3" fill="#64748B"/>
+                        <rect x="235" y="180" width="30" height="6" rx="3" fill="#64748B"/>
                     </svg>
                 </div>
             </div>
-        </section>
 
-        <!-- FLAGSHIP WORK -->
-        <section>
-            <div class="section-title reveal">
-                <h3>Flagship Work</h3>
+            <!-- FLAGSHIP PROJECTS -->
+            <div class="section-header reveal">
+                <h3 class="section-title">Flagship Work</h3>
             </div>
             
             <div class="flagship-grid">
                 
-                <!-- DADI KI DAWAI -->
-                <article class="flagship-card reveal">
+                <!-- DADI -->
+                <article class="flagship-item reveal">
                     <div class="flagship-content">
-                        <h4 class="gw-title" style="font-size: 2.5rem;">Dadi Ki Dawai</h4>
-                        <p class="gw-desc">AI Healthcare Assistant leveraging Groq LLM. Processes 20+ diverse symptom categories with context-aware conversational memory and secure session management via REST APIs.</p>
-                        
-                        <div class="tech-list mono">
-                            <span>Python</span><span>Flask</span><span>Groq API</span><span>REST API</span>
+                        <h4 class="flagship-title">Dadi Ki Dawai</h4>
+                        <p class="flagship-desc">AI health assistant leveraging Groq LLM integration. Context-aware conversational architecture supporting 20+ distinct symptom categories, backed by secure REST APIs for session management.</p>
+                        <div class="tech-tags">
+                            <span>Python</span><span>Flask</span><span>Groq LLM</span><span>REST API</span>
                         </div>
-                        
-                        <div class="project-links mono">
-                            <a href="https://github.com/Ashmit-702/final-health" target="_blank">GitHub ↗</a>
-                            <a href="https://dadi-healthchat.onrender.com" target="_blank">Live ↗</a>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/final-health" target="_blank" class="project-link">GitHub ↗</a>
+                            <a href="https://dadi-healthchat.onrender.com" target="_blank" class="project-link">Live ↗</a>
                         </div>
                     </div>
-                    <div class="flagship-visual interactive-card parallax-container">
-                        <!-- Custom SVG for Healthcare Chat -->
-                        <svg class="svg-art parallax-element" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="40" y="30" width="180" height="40" rx="20" fill="#1e2235" stroke="rgba(255,255,255,0.1)"/>
-                            <rect x="80" y="90" width="180" height="40" rx="20" fill="#2a2f4c" stroke="#818cf8"/>
-                            <rect x="40" y="150" width="120" height="40" rx="20" fill="#1e2235" stroke="rgba(255,255,255,0.1)"/>
-                            <path d="M220 50 L240 50 L250 30 L260 70 L270 50 L290 50" stroke="#a78bfa" stroke-width="3" stroke-linejoin="round"/>
-                        </svg>
+                    <div class="flagship-visual card">
+                        <!-- Bespoke Dadi UI Art -->
+                        <div class="dadi-ui">
+                            <div class="dadi-bubble ai"></div>
+                            <div class="dadi-bubble" style="align-self: flex-end; width: 50%;"></div>
+                            <div class="dadi-bubble ai" style="width: 80%;"></div>
+                        </div>
                     </div>
                 </article>
 
                 <!-- MAINLAND -->
-                <article class="flagship-card reveal">
+                <article class="flagship-item reveal">
                     <div class="flagship-content">
-                        <h4 class="gw-title" style="font-size: 2.5rem;">Mainland</h4>
-                        <p class="gw-desc">Python and PostgreSQL-based backend ecosystem designed for optimized data ingestion and handling asynchronous background orchestration.</p>
-                        
-                        <div class="tech-list mono">
-                            <span>Python</span><span>PostgreSQL</span><span>FastAPI</span>
+                        <h4 class="flagship-title">Mainland</h4>
+                        <p class="flagship-desc">Mahabharata-inspired arcade/RPG experience. Features procedural dungeon generation, AI-powered NPC dialogue, and boss narration driven by a Python serverless backend and a vanilla JS/Canvas frontend.</p>
+                        <div class="tech-tags">
+                            <span>Python Serverless</span><span>JavaScript Canvas</span><span>AI Dialogue</span><span>Procedural Gen</span>
                         </div>
-                        
-                        <div class="project-links mono">
-                            <a href="https://github.com/Ashmit-702/Mainland" target="_blank">GitHub ↗</a>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/Mainland" target="_blank" class="project-link">GitHub ↗</a>
+                            <!-- Using GitHub only as requested when no distinct live link is provided to avoid fabrication -->
                         </div>
                     </div>
-                    <div class="flagship-visual interactive-card parallax-container">
-                        <!-- Custom SVG for Backend Architecture -->
-                        <svg class="svg-art parallax-element" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Database Cylinders -->
-                            <ellipse cx="70" cy="140" rx="40" ry="15" fill="#1e2235" stroke="#818cf8"/>
-                            <path d="M30 140 V70 A40 15 0 0 0 110 70 V140" fill="#1e2235" stroke="#818cf8"/>
-                            <ellipse cx="70" cy="70" rx="40" ry="15" fill="#2a2f4c" stroke="#818cf8"/>
-                            <!-- Data Lines -->
-                            <path d="M120 105 L180 105" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-dasharray="4 4">
-                                <animate attributeName="stroke-dashoffset" from="16" to="0" dur="1s" repeatCount="indefinite"/>
-                            </path>
-                            <!-- Processing Nodes -->
-                            <rect x="190" y="60" width="80" height="90" rx="8" fill="#1e2235" stroke="rgba(255,255,255,0.1)"/>
-                            <circle cx="230" cy="105" r="20" fill="none" stroke="#a78bfa" stroke-width="4" stroke-dasharray="30 120">
-                                <animateTransform attributeName="transform" type="rotate" from="0 230 105" to="360 230 105" dur="4s" repeatCount="indefinite"/>
-                            </circle>
-                        </svg>
+                    <div class="flagship-visual card">
+                        <!-- Bespoke Mainland Art -->
+                        <div class="mainland-grid">
+                            <div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell path"></div><div class="ml-cell path"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div>
+                            <div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell path"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div>
+                            <div class="ml-cell path"></div><div class="ml-cell path"></div><div class="ml-cell path player"></div><div class="ml-cell path"></div><div class="ml-cell path"></div><div class="ml-cell path"></div><div class="ml-cell"></div><div class="ml-cell"></div>
+                            <div class="ml-cell path"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell path"></div><div class="ml-cell path"></div><div class="ml-cell path"></div>
+                            <div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div><div class="ml-cell"></div>
+                        </div>
                     </div>
                 </article>
 
                 <!-- NETABOARD -->
-                <article class="flagship-card reveal">
+                <article class="flagship-item reveal">
                     <div class="flagship-content">
-                        <h4 class="gw-title" style="font-size: 2.5rem;">NetaBoard</h4>
-                        <p class="gw-desc">Interactive data visualization dashboard focusing on political metrics. Aggregates live data streams to provide statistical overviews and tracking interfaces.</p>
-                        
-                        <div class="tech-list mono">
-                            <span>React</span><span>SQL</span><span>Data Visualization</span>
+                        <h4 class="flagship-title">NetaBoard</h4>
+                        <p class="flagship-desc">Political intelligence and fact-checking data platform. Designed to track leaders and news accountability through an interactive data visualization dashboard.</p>
+                        <div class="tech-tags">
+                            <span>Data Visualization</span><span>Dashboard</span><span>Intelligence</span>
                         </div>
-                        
-                        <div class="project-links mono">
-                            <a href="https://github.com/Ashmit-702/NetaBoard" target="_blank">GitHub ↗</a>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/NetaBoard" target="_blank" class="project-link">GitHub ↗</a>
                         </div>
                     </div>
-                    <div class="flagship-visual interactive-card parallax-container">
-                        <!-- Custom SVG for Dashboard Metrics -->
-                        <svg class="svg-art parallax-element" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="20" y="20" width="260" height="160" rx="8" fill="#141724" stroke="rgba(255,255,255,0.1)"/>
-                            <!-- Bar Chart -->
-                            <rect x="50" y="120" width="20" height="40" fill="#2a2f4c"/>
-                            <rect x="80" y="90" width="20" height="70" fill="#818cf8"/>
-                            <rect x="110" y="60" width="20" height="100" fill="#a78bfa"/>
-                            <rect x="140" y="100" width="20" height="60" fill="#2a2f4c"/>
-                            <!-- Radar / Pie abstract -->
-                            <circle cx="220" cy="90" r="35" fill="none" stroke="#6366f1" stroke-width="8" stroke-dasharray="100 120"/>
-                            <circle cx="220" cy="90" r="35" fill="none" stroke="#2a2f4c" stroke-width="8" stroke-dasharray="80 140" stroke-dashoffset="-100"/>
-                        </svg>
+                    <div class="flagship-visual card">
+                        <!-- Bespoke NetaBoard Art -->
+                        <div class="neta-dashboard">
+                            <div class="neta-col" style="flex: 0.4;">
+                                <div class="neta-card"></div>
+                                <div class="neta-card" style="flex: 2;"></div>
+                            </div>
+                            <div class="neta-col">
+                                <div class="neta-card">
+                                    <div class="neta-bar" style="height: 40%;"></div>
+                                    <div class="neta-bar-2" style="height: 70%;"></div>
+                                    <div class="neta-bar-3" style="height: 30%;"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
 
                 <!-- STOCKFI -->
-                <article class="flagship-card reveal">
+                <article class="flagship-item reveal">
                     <div class="flagship-content">
-                        <h4 class="gw-title" style="font-size: 2.5rem;">Stockfi</h4>
-                        <p class="gw-desc">AI market sentiment analyzer processing 500+ daily financial articles. Uses a batch NLP scoring pipeline to evaluate news and generate actionable BUY/HOLD/SELL signals across equity tickers.</p>
-                        
-                        <div class="tech-list mono">
-                            <span>Python</span><span>FastAPI</span><span>NLP</span><span>PostgreSQL</span>
+                        <h4 class="flagship-title">Stockfi</h4>
+                        <p class="flagship-desc">Financial news sentiment analyzer utilizing VADER NLP. Processes equity news streams to generate actionable BUY/HOLD/SELL signals across a dedicated financial dashboard.</p>
+                        <div class="tech-tags">
+                            <span>Python</span><span>FastAPI</span><span>VADER NLP</span><span>PostgreSQL</span>
                         </div>
-                        
-                        <div class="project-links mono">
-                            <a href="https://github.com/Ashmit-702/Stockfi" target="_blank">GitHub ↗</a>
-                            <a href="https://stockfi-uq2v.onrender.com/dashboard/" target="_blank">Live ↗</a>
+                        <div class="project-links">
+                            <a href="https://github.com/Ashmit-702/Stockfi" target="_blank" class="project-link">GitHub ↗</a>
+                            <a href="https://stockfi-uq2v.onrender.com/dashboard/" target="_blank" class="project-link">Live ↗</a>
                         </div>
                     </div>
-                    <div class="flagship-visual interactive-card parallax-container">
-                        <!-- Custom SVG for Financial Sentiment -->
-                        <svg class="svg-art parallax-element" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Grid -->
-                            <path d="M30 40 H270 M30 100 H270 M30 160 H270" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
-                            <!-- Candlesticks -->
-                            <rect x="68" y="70" width="4" height="40" fill="#475569"/>
-                            <rect x="60" y="80" width="20" height="20" fill="#a78bfa"/>
-                            
-                            <rect x="138" y="90" width="4" height="50" fill="#475569"/>
-                            <rect x="130" y="110" width="20" height="20" fill="#2a2f4c"/>
-                            
-                            <rect x="208" y="30" width="4" height="60" fill="#475569"/>
-                            <rect x="200" y="40" width="20" height="30" fill="#818cf8"/>
-                            
-                            <!-- Glowing Sentiment Line -->
-                            <path d="M30 140 Q100 140 130 90 T270 40" stroke="#818cf8" stroke-width="3" filter="drop-shadow(0 0 8px rgba(129,140,248,0.6))"/>
-                        </svg>
+                    <div class="flagship-visual card">
+                        <!-- Bespoke Stockfi Art -->
+                        <div class="stock-chart">
+                            <div class="sentiment-line"></div>
+                            <div class="candle bull" style="height: 40px; margin-bottom: 20px;"></div>
+                            <div class="candle" style="height: 60px; margin-bottom: 10px;"></div>
+                            <div class="candle bull" style="height: 30px; margin-bottom: 40px;"></div>
+                            <div class="candle bull" style="height: 50px; margin-bottom: 50px;"></div>
+                            <div class="candle" style="height: 40px; margin-bottom: 30px;"></div>
+                            <div class="candle bull" style="height: 70px; margin-bottom: 60px;"></div>
+                        </div>
                     </div>
                 </article>
 
             </div>
         </section>
 
-        <!-- MORE WORK (Secondary) -->
+        <!-- SECONDARY PROJECTS -->
         <section>
-            <div class="section-title reveal">
-                <h3>More Work</h3>
+            <div class="section-header reveal">
+                <h3 class="section-title">More Projects</h3>
             </div>
             
             <div class="secondary-grid">
                 
-                <article class="secondary-card interactive-card reveal">
+                <article class="secondary-card card reveal">
                     <h4 class="secondary-title">ASHLYSIS</h4>
-                    <p class="gw-desc" style="font-size: 1rem;">AI Exam Intelligence Platform utilizing semantic similarity (TF-IDF) and Gemini API to automate question analysis and generate structured study plans from PyMuPDF OCR.</p>
-                    <div class="tech-list mono">
+                    <p class="secondary-desc">AI Exam Intelligence Platform utilizing semantic similarity (TF-IDF) and Gemini API to automate question analysis and generate structured study plans.</p>
+                    <div class="tech-tags">
                         <span>Flask</span><span>Gemini API</span><span>TF-IDF</span><span>PyMuPDF</span>
                     </div>
-                    <div class="project-links mono">
-                        <a href="https://github.com/Ashmit-702/Ashlysis-done" target="_blank">GitHub ↗</a>
-                        <a href="https://ashlysis.onrender.com" target="_blank">Live ↗</a>
+                    <div class="project-links">
+                        <a href="https://github.com/Ashmit-702/Ashlysis-done" target="_blank" class="project-link">GitHub ↗</a>
+                        <a href="https://ashlysis.onrender.com" target="_blank" class="project-link">Live ↗</a>
                     </div>
                 </article>
 
-                <article class="secondary-card interactive-card reveal">
+                <article class="secondary-card card reveal">
                     <h4 class="secondary-title">CV Analyze</h4>
-                    <p class="gw-desc" style="font-size: 1rem;">Automated resume parsing utility built with NLP and Regex. Extracts key technical competencies to dynamically match professional profiles against requirements.</p>
-                    <div class="tech-list mono">
+                    <p class="secondary-desc">Automated resume parsing utility built with NLP and Regex. Extracts technical competencies to dynamically match professional profiles.</p>
+                    <div class="tech-tags">
                         <span>Python</span><span>NLP</span><span>Regex</span>
                     </div>
-                    <div class="project-links mono">
-                        <a href="https://github.com/Ashmit-702/CV-Analyze" target="_blank">GitHub ↗</a>
+                    <div class="project-links">
+                        <a href="https://github.com/Ashmit-702/CV-Analyze" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
-                
-                <article class="secondary-card interactive-card reveal">
-                    <h4 class="secondary-title">Kaun Banega Crorepati</h4>
-                    <p class="gw-desc" style="font-size: 1rem;">A console-based trivia engine built in C++ leveraging object-oriented programming principles. Features randomized question pools and interactive lifeline mechanics.</p>
-                    <div class="tech-list mono">
-                        <span>C++</span><span>OOP</span>
+
+                <article class="secondary-card card reveal">
+                    <h4 class="secondary-title">Vitals+</h4>
+                    <p class="secondary-desc">Comprehensive health utility application integrating metric tracking and predictive insights.</p>
+                    <div class="tech-tags">
+                        <span>Python</span><span>Data Analysis</span>
                     </div>
-                    <div class="project-links mono">
-                        <a href="https://github.com/Ashmit-702" target="_blank">GitHub ↗</a>
+                    <div class="project-links">
+                        <a href="https://github.com/Ashmit-702" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
-                
-                <article class="secondary-card interactive-card reveal">
-                    <h4 class="secondary-title">Movie Recommendation Engine</h4>
-                    <p class="gw-desc" style="font-size: 1rem;">Content-based recommendation system parsing film datasets to surface relevant titles. Built with Pandas and Scikit-learn, presented via Streamlit UI.</p>
-                    <div class="tech-list mono">
-                        <span>Python</span><span>Pandas</span><span>Scikit-learn</span><span>Streamlit</span>
+
+                <article class="secondary-card card reveal">
+                    <h4 class="secondary-title">SnapLink</h4>
+                    <p class="secondary-desc">Real-time connection routing protocol prioritizing low-latency data handoffs.</p>
+                    <div class="tech-tags">
+                        <span>Backend</span><span>Networking</span>
                     </div>
-                    <div class="project-links mono">
-                        <a href="https://github.com/Ashmit-702" target="_blank">GitHub ↗</a>
+                    <div class="project-links">
+                        <a href="https://github.com/Ashmit-702" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
 
             </div>
         </section>
 
-        <!-- OTHER BUILDS -->
-        <section class="reveal">
-            <div class="section-title">
-                <h3>Other Builds</h3>
+        <!-- OTHER BUILDS (Low Priority - No Live Links) -->
+        <section>
+            <div class="section-header reveal">
+                <h3 class="section-title">Other Builds</h3>
             </div>
             
-            <div style="display: flex; flex-direction: column;">
-                <article class="build-row">
+            <div class="builds-list">
+                <article class="build-row reveal">
                     <h4 class="build-title">LinkedIn CRM</h4>
                     <p class="build-desc">Relationship management utility for tracking professional network interactions.</p>
-                    <div class="project-links mono" style="margin-top: 0;">
-                        <a href="https://github.com/Ashmit-702/LinkedIn-CRM" target="_blank">GitHub ↗</a>
+                    <div class="project-links" style="margin: 0;">
+                        <a href="https://github.com/Ashmit-702/LinkedIn-CRM" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
 
-                <article class="build-row">
+                <article class="build-row reveal">
                     <h4 class="build-title">Autonomous AI Creator</h4>
                     <p class="build-desc">Experimental pipeline for automated content generation and orchestration.</p>
-                    <div class="project-links mono" style="margin-top: 0;">
-                        <a href="https://github.com/Ashmit-702/Autonomous-AI-Creator" target="_blank">GitHub ↗</a>
+                    <div class="project-links" style="margin: 0;">
+                        <a href="https://github.com/Ashmit-702/Autonomous-AI-Creator" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
 
-                <article class="build-row">
+                <article class="build-row reveal">
                     <h4 class="build-title">URL Shortener</h4>
-                    <p class="build-desc">Fast, self-hosted link management service utilizing FastAPI architecture.</p>
-                    <div class="project-links mono" style="margin-top: 0;">
-                        <a href="https://github.com/Ashmit-702/URL-Shortener" target="_blank">GitHub ↗</a>
+                    <p class="build-desc">Self-hosted link management service utilizing structured backend architecture.</p>
+                    <div class="project-links" style="margin: 0;">
+                        <a href="https://github.com/Ashmit-702/URL-Shortener" target="_blank" class="project-link">GitHub ↗</a>
                     </div>
                 </article>
             </div>
         </section>
 
         <!-- HOW I SHIP -->
-        <section class="reveal" id="pipeline-section">
-            <div class="section-title">
-                <h3>How I Ship</h3>
+        <section id="process">
+            <div class="section-header reveal">
+                <h3 class="section-title">How I Ship</h3>
             </div>
             
-            <div class="pipeline-container">
+            <div class="pipeline-container reveal" id="pipeline">
                 <div class="pipeline-track"></div>
-                <div class="pipeline-progress"></div>
+                <div class="pipeline-signal"></div>
                 
-                <div class="pipeline-nodes mono">
-                    <div class="node"><div class="node-dot"></div><span>Research</span></div>
-                    <div class="node"><div class="node-dot"></div><span>Design</span></div>
-                    <div class="node"><div class="node-dot"></div><span>Build</span></div>
-                    <div class="node"><div class="node-dot"></div><span>Integrate</span></div>
-                    <div class="node"><div class="node-dot"></div><span>Verify</span></div>
-                    <div class="node"><div class="node-dot"></div><span>Ship</span></div>
+                <div class="pipeline-nodes">
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Research</span>
+                        <div class="p-hover-content">Evaluate schemas</div>
+                    </div>
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Design</span>
+                        <div class="p-hover-content">Architecture planning</div>
+                    </div>
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Build</span>
+                        <div class="p-hover-content">Flask/FastAPI logic</div>
+                    </div>
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Integrate</span>
+                        <div class="p-hover-content">LLMs & REST APIs</div>
+                    </div>
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Verify</span>
+                        <div class="p-hover-content">Validation logic</div>
+                    </div>
+                    <div class="p-node">
+                        <div class="p-dot"></div>
+                        <span class="p-label">Ship</span>
+                        <div class="p-hover-content">Render / Vercel</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="ship-details">
-                <div class="ship-col">
+            <div class="ship-principles reveal">
+                <div class="principle">
                     <h4 class="mono">ARCHITECTURE</h4>
-                    <p>Evaluating requirements against optimal database schemas (PostgreSQL/Supabase).</p>
-                    <p>Designing structured backends in Flask/FastAPI built for extensibility.</p>
+                    <p>Designing structured backends built for extensibility (Flask/FastAPI).</p>
+                    <p>Evaluating requirements against optimal database schemas (PostgreSQL).</p>
                 </div>
-                <div class="ship-col">
+                <div class="principle">
                     <h4 class="mono">ENGINEERING</h4>
-                    <p>Developing secure REST APIs and robust data ingestion pipelines.</p>
-                    <p>Implementing seamless AI/LLM integrations with smart fallback mechanisms and NLP processing.</p>
+                    <p>Developing secure REST APIs and robust data pipelines.</p>
+                    <p>Implementing seamless LLM integrations and NLP pipelines with smart fallback handling.</p>
                 </div>
-                <div class="ship-col">
+                <div class="principle">
                     <h4 class="mono">PRODUCTION</h4>
                     <p>Enforcing strict data validation and establishing caching layers.</p>
-                    <p>Executing iterative testing leading to stable, scalable deployments on Render and Vercel.</p>
+                    <p>Executing iterative testing for stable deployments across cloud providers.</p>
                 </div>
             </div>
         </section>
 
         <!-- TECH STACK -->
-        <section class="reveal">
-            <div class="section-title">
-                <h3>Tech Stack</h3>
+        <section id="stack">
+            <div class="section-header reveal">
+                <h3 class="section-title">Tech Stack</h3>
             </div>
             
-            <div class="stack-grid mono">
+            <div class="stack-grid reveal">
                 <div class="stack-col">
-                    <span style="color: #fff;">Languages</span>
+                    <h4 class="mono">Languages</h4>
                     <ul class="stack-list">
                         <li>Python</li>
                         <li>C++</li>
@@ -974,103 +1174,103 @@
                 </div>
                 
                 <div class="stack-col">
-                    <span style="color: #fff;">Backend</span>
+                    <h4 class="mono">Backend</h4>
                     <ul class="stack-list">
                         <li>Flask</li>
                         <li>FastAPI</li>
                         <li>REST APIs</li>
-                        <li>Next.js</li>
                     </ul>
                 </div>
 
                 <div class="stack-col">
-                    <span style="color: #fff;">AI / ML</span>
+                    <h4 class="mono">AI / ML</h4>
                     <ul class="stack-list">
                         <li>NLP / TF-IDF</li>
                         <li>Scikit-learn</li>
                         <li>NumPy & Pandas</li>
-                        <li>LLM APIs (Groq/Gemini)</li>
-                        <li>OpenCV</li>
+                        <li>LLM APIs</li>
                     </ul>
                 </div>
 
                 <div class="stack-col">
-                    <span style="color: #fff;">Data & Infra</span>
+                    <h4 class="mono">Data & Infra</h4>
                     <ul class="stack-list">
                         <li>PostgreSQL</li>
                         <li>SQLite</li>
                         <li>Supabase</li>
+                        <li>Docker / AWS</li>
                         <li>Render / Vercel</li>
-                        <li>Git / GitHub</li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- FOOTER -->
-        <footer class="reveal">
+        <!-- CONTACT -->
+        <footer id="contact" class="reveal">
             <a href="mailto:ashmitsingh702@gmail.com" class="contact-email">ashmitsingh702@gmail.com</a>
             
-            <div class="footer-links mono">
-                <a href="https://github.com/Ashmit-702" target="_blank" class="project-links" style="margin:0;"><span style="border-bottom:1px solid var(--border-light); padding-bottom:2px;">GitHub ↗</span></a>
-                <a href="https://www.linkedin.com/in/ashmitvsingh" target="_blank" class="project-links" style="margin:0;"><span style="border-bottom:1px solid var(--border-light); padding-bottom:2px;">LinkedIn ↗</span></a>
+            <div class="footer-links">
+                <a href="https://github.com/Ashmit-702" target="_blank" class="project-link">GitHub ↗</a>
+                <a href="https://www.linkedin.com/in/ashmitvsingh" target="_blank" class="project-link">LinkedIn ↗</a>
             </div>
         </footer>
 
     </div>
 
+    <!-- Interactions & Reveal Engine -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // 1. Scroll Reveal Logic
-            const observerOptions = {
+            // 1. Intersection Observer for standard reveals
+            const revealOptions = {
                 root: null,
                 rootMargin: '0px 0px -10% 0px',
-                threshold: 0.15
+                threshold: 0.1
             };
 
-            const observer = new IntersectionObserver((entries, observer) => {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
+                        entry.target.classList.add('in-view');
                         
-                        // Special trigger for How I Ship pipeline animation
-                        if(entry.target.id === 'pipeline-section') {
-                            entry.target.querySelector('.pipeline-container').classList.add('active');
+                        // Specific trigger for How I Ship animation
+                        if(entry.target.id === 'pipeline') {
+                            entry.target.classList.add('in-view');
                         }
                         
                         observer.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
+            }, revealOptions);
 
             document.querySelectorAll('.reveal').forEach(el => {
-                observer.observe(el);
+                revealObserver.observe(el);
             });
 
-            // 2. Parallax Hover Effect for Project Cards
-            const parallaxContainers = document.querySelectorAll('.parallax-container');
+            // 2. 3D Tilt Effect for Project Cards (Disabled for prefers-reduced-motion in CSS)
+            const cards = document.querySelectorAll('.card');
             
-            parallaxContainers.forEach(container => {
-                const element = container.querySelector('.parallax-element');
-                if(!element) return;
-                
-                container.addEventListener('mousemove', (e) => {
-                    const rect = container.getBoundingClientRect();
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // Only apply if user hasn't requested reduced motion
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    
+                    const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     
-                    const deltaX = (x - centerX) / centerX;
-                    const deltaY = (y - centerY) / centerY;
+                    // Constrained rotation
+                    const rotateX = ((y - centerY) / centerY) * -3; 
+                    const rotateY = ((x - centerX) / centerX) * 3;
                     
-                    // Subtle movement mapping
-                    element.style.transform = `translate(${deltaX * 15}px, ${deltaY * 15}px) scale(1.02)`;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
                 });
                 
-                container.addEventListener('mouseleave', () => {
-                    element.style.transform = `translate(0px, 0px) scale(1)`;
+                card.addEventListener('mouseleave', () => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
                 });
             });
         });
